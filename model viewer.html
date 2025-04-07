@@ -1,0 +1,38 @@
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<model-viewer id="viewer"
+  src="https://www.dropbox.com/scl/fi/zz8zo5ur9bkhax45wrj7g/bodylock.glb?rlkey=or8ksjoo6ssl4s0rsjm3xtq6l&st=sq16p9m5&raw=1"
+  camera-controls
+  auto-rotate
+  style="width: 800px; height: 600px;">
+</model-viewer>
+
+<div id="part-info" style="margin-top: 10px; font-family: sans-serif;"></div>
+
+<script>
+// This section stores the info for each part
+const partInfo = {
+  "Test 1": "Material: Aluminum, Weight: 2.5kg, Dimensions: 300mm x 300mm x 10mm",
+  "Test 2": "Material: Steel, Length: 150mm, Diameter: 20mm, Weight: 1.1kg",
+  "Test 3": "Material: Stainless Steel, Thread: M6, Length: 50mm"
+};
+
+// Setting up the model viewer
+const viewer = document.querySelector("#viewer");
+const infoBox = document.querySelector("#part-info");
+
+// Listen for model loaded event
+viewer.addEventListener("load", () => {
+  const scene = viewer.model.scene;
+  
+  // Add click listener to each part
+  scene.traverse((node) => {
+    if (node.name) { // If the part has a name (as you renamed in Blender)
+      node.addEventListener("click", () => {
+        // Show part-specific info when clicked
+        infoBox.innerText = partInfo[node.name] || `You clicked on: ${node.name}`;
+      });
+    }
+  });
+});
+</script>
